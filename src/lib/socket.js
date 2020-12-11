@@ -1,6 +1,6 @@
 import io from 'socket.io-client';
 
-let url = 'http://192.168.1.120:4000';
+let url = 'http://192.168.1.121:4000';
 if (process.env.NODE_ENV === 'production') url = 'https://monopoly-backend.ayushgoyal.dev';
 const socket = io(url);
 export default socket;

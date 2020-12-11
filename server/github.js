@@ -1,3 +1,24 @@
+const chalk = require('chalk');
+const express = require('express');
+const cors = require('cors');
+const app = express();
+const server = require('http').Server(app);
+
+const io = require('socket.io')(server, {
+  cors: {
+    origin: '*',
+  },
+});
+
+app.set('view engine', 'jade');
+app.use(cors());
+app.options('*', cors());
+console.log('Starting!');
+server.listen(4000);
+
+const players = [];
+let parking = 50;
+
 Array.prototype.search = function (key, value) {
   for (let i = 0; i < this.length; i++) {
     if (this[i][key] == value) return i;
@@ -7,38 +28,10 @@ Array.prototype.search = function (key, value) {
   return false;
 };
 
-Number.prototype.pad = function () {
-  return this < 10 ? '0' + this : this;
-};
-
-const chalk = require('chalk'),
-  express = require('express'),
-  cors = require('cors');
-(app = express()), (server = require('http').Server(app));
-
-const timestamp = () => {
-  const date = new Date();
-  return date.getHours().pad() + ':' + date.getMinutes().pad() + ':' + date.getSeconds().pad() + ' ';
-};
-
-const io = require('socket.io')(server, {
-  cors: {
-    origin: '*',
-  },
-});
-
-console.log('Starting!');
-
-const players = [];
-let parking = 50;
-
-server.listen(4000);
-
-app.set('view engine', 'jade');
-app.use(cors());
-app.options('*', cors());
-
 io.on('connection', (socket) => {
+
+  // TODO support multiple games simultaneously and ability to close a game 
+
   socket.on('getPlayers', (username) => {
     console.log('Firing -> ', username);
     console.log(players);
@@ -47,7 +40,6 @@ io.on('connection', (socket) => {
     } catch {
       console.log('no socket id');
     }
-
     socket.emit('update', players);
   });
 
@@ -61,7 +53,7 @@ io.on('connection', (socket) => {
       io.sockets.emit('notification', { type: 'info', message: username + ' has joined the game' });
       socket.emit('update', players);
       console.log(players);
-      console.log(timestamp() + chalk.magenta('CONNECTION: ') + chalk.gray(username + ' connected'));
+      console.log(chalk.magenta('CONNECTION: ') + chalk.gray(username + ' connected'));
       io.emit('update', players);
     }
   });
@@ -95,16 +87,16 @@ io.on('connection', (socket) => {
           players[players.search('id', socket.id)].balance += 2 * parseInt(data.value); // Since we deducted before
           io.sockets.emit('update', players);
           io.sockets.emit('notification', { type: 'info', message: players[players.search('id', socket.id)].username + ' Passed Go!' });
-          console.log(timestamp() + chalk.yellow('TRANSFER: ') + chalk.gray(players[players.search('id', socket.id)].username + ' paid a £' + data.value + ' fine'));
+          console.log(chalk.yellow('TRANSFER: ') + chalk.gray(players[players.search('id', socket.id)].username + ' paid a £' + data.value + ' fine'));
         } else if (data.player === 'bank') {
           io.sockets.emit('update', players);
           io.sockets.emit('notification', { type: 'info', message: players[players.search('id', socket.id)].username + ' Sent ₹' + data.value + ' to Bank' });
-          console.log(timestamp() + chalk.yellow('TRANSFER: ') + chalk.gray(players[players.search('id', socket.id)].username + ' paid £' + data.value + ' to the bank'));
+          console.log(chalk.yellow('TRANSFER: ') + chalk.gray(players[players.search('id', socket.id)].username + ' paid £' + data.value + ' to the bank'));
         } else if (Number.isInteger(players.search('id', data.player))) {
           players[players.search('id', data.player)].balance += parseInt(data.value);
           io.sockets.emit('update', players);
           io.sockets.emit('notification', { type: 'info', message: players[players.search('id', socket.id)].username + ' Sent ₹' + data.value + ' to ' + players[players.search('id', data.player)].username });
-          console.log(timestamp() + chalk.yellow('TRANSFER: ') + chalk.gray(players[players.search('id', socket.id)].username + ' paid ₹' + data.value + ' to ' + players[players.search('id', data.player)].username));
+          console.log(chalk.yellow('TRANSFER: ') + chalk.gray(players[players.search('id', socket.id)].username + ' paid ₹' + data.value + ' to ' + players[players.search('id', data.player)].username));
         }
       }
     }
@@ -117,7 +109,7 @@ io.on('connection', (socket) => {
         players[players.search('id', socket.id)].balance += parseInt(data.value);
         io.sockets.emit('update', players);
         io.sockets.emit('notification', { type: 'info', message: players[players.search('id', socket.id)].username + ' Received ₹' + data.value + ' From Bank' });
-        console.log(timestamp() + chalk.red('ADD: ') + chalk.gray(players[players.search('id', socket.id)].username + ' received £' + data.value));
+        console.log(chalk.red('ADD: ') + chalk.gray(players[players.search('id', socket.id)].username + ' received £' + data.value));
       }
     }
   });
