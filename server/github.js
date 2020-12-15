@@ -29,9 +29,9 @@ Array.prototype.search = function (key, value) {
 };
 
 io.on('connection', (socket) => {
-
-  // TODO support multiple games simultaneously and ability to close a game 
-
+  // TODO support multiple games simultaneously and ability to close a game
+  // TODO online/offline
+  // Prompt initial money, passgo money from user
   socket.on('getPlayers', (username) => {
     console.log('Firing -> ', username);
     console.log(players);
