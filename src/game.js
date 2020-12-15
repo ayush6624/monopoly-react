@@ -49,6 +49,8 @@ export default function Game(props) {
   }, []);
   useEffect(() => {
     socket.on('update', (d) => {
+      d.map((e, i) => (e.id === socket.id ? ([d[0], d[i]] = [d[i], d[0]]) : ''));
+      console.log(d);
       setGameData([...d]);
     });
   }, []);
@@ -102,7 +104,6 @@ export default function Game(props) {
                   icon={<LogOut />}
                   type="error"
                   onClick={() => {
-                    // window.localStorage.clear('username');
                     socket.emit('message', 'exit_notification');
                     history.push('/');
                   }}
@@ -194,7 +195,6 @@ export default function Game(props) {
                     icon={<Send />}
                     type="success"
                     onClick={(e) => {
-                      // e.preventDefault();
                       console.log('clicking send icon');
                       payMoney({ id: 'bank' });
                     }}
@@ -205,7 +205,6 @@ export default function Game(props) {
                     icon={<Compass />}
                     type="success"
                     onClick={(e) => {
-                      // e.preventDefault()
                       socket.emit('pay', { player: 'go' });
                     }}
                   ></Button>
