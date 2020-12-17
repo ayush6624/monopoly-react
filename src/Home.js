@@ -1,6 +1,7 @@
 import { Card, Text, Input, Button, Spacer } from '@geist-ui/react';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import Install from './installPrompt';
 import socket from './lib/socket';
 
 export default function Home() {
@@ -45,6 +46,7 @@ export default function Home() {
 
   return (
     <>
+      <Install />
       <div className="container">
         <main>
           <h1 className="title">
