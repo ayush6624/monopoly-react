@@ -19,7 +19,7 @@ export default function App() {
 
   return (
     <>
-      <GeistProvider theme={{ type: themeState }}>
+      <GeistProvider themeType={themeState}>
         <CssBaseline />
         <Switch>
           <Route exact path="/">
