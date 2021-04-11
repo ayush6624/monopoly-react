@@ -21,5 +21,23 @@
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "background_color": "#ffffff",
+  "description": "Play Monopoly Banker!",
+  "screenshots": [
+    {
+      "src": "screen1.jpg",
+      "type": "image/jpg",
+      "sizes": "1080x2400"
+    },
+    {
+      "src": "screen2.jpg",
+      "type": "image/jpg",
+      "sizes": "1080x2400"
+    },
+    {
+      "src": "screen3.jpg",
+      "type": "image/jpg",
+      "sizes": "1080x2400"
+    }
+  ]
 }
