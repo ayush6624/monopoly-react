@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import socket from './lib/socket';
 import { Compass, Send, DollarSign, Moon, LogOut } from '@geist-ui/react-icons';
 import { useHistory } from 'react-router-dom';
+import { pwa } from './Home';
 
 export default function Game(props) {
   let history = useHistory();
@@ -30,6 +31,7 @@ export default function Game(props) {
   useEffect(() => {
     console.log('localstorage -> ', window.localStorage.getItem('username'));
     socket.emit('getPlayers', window.localStorage.getItem('username'));
+    pwa.WakeLock();
     return () => {
       console.log('closing game.js first useEffect');
     };
@@ -40,6 +42,17 @@ export default function Game(props) {
     socket.on('notification', (n) => {
       let theme_type = n.type === 'error' ? 'error' : 'success';
       setToast({ text: n.message, type: theme_type, delay: 3000 });
+      if (theme_type === 'success') {
+        const notificationText = {
+          title: n.message,
+          options: {
+            // body: 'Progressive Web App Hello Notification!',
+            icon: '/logo192.png',
+            tag: 'pwa',
+          },
+        };
+        pwa.Notification(notificationText);
+      }
       console.log(n);
     });
     return () => {

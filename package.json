@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@geist-ui/react": "^2.1.4",
+    "@geist-ui/react": "2.1.0-canary.2",
     "@geist-ui/react-icons": "^1.0.1",
+    "pwafire": "^2.0.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-pwa-installer-prompt": "^1.0.8",
@@ -19,7 +20,8 @@
     "start": "react-scripts start",
     "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "serve": "serve -s build"
   },
   "eslintConfig": {
     "extends": [

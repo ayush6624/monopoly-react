@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Install from './installPrompt';
 import socket from './lib/socket';
+import pwafire from 'pwafire';
+export const pwa = pwafire.pwa;
 
 export default function Home() {
   let history = useHistory();
@@ -33,12 +35,21 @@ export default function Home() {
   useEffect(() => {
     if (notification) console.log(notification);
     if (notification.message?.includes('has joined the game')) {
+      const data = {
+        title: notification.message,
+        options: {
+          icon: '/logo192.png',
+          tag: 'pwa',
+        },
+      };
+      pwa.Notification(data);
       window.localStorage.setItem('username', name);
       setTimeout(() => {
         console.log('MOCK ROUTING TO /PAGE');
         history.push('/game');
       }, 500);
     }
+
     return () => {
       console.log('notification and pushing unmount');
     };
