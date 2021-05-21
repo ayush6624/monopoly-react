@@ -1,0 +1,14 @@
+[
+    {
+        "relation": [
+            "delegate_permission/common.handle_all_urls"
+        ],
+        "target": {
+            "namespace": "android_app",
+            "package_name": "dev.ayushgoyal.monopoly.twa",
+            "sha256_cert_fingerprints": [
+                "C7:56:AF:EE:4C:5B:15:E0:9E:D2:6F:FF:33:23:70:83:26:91:6D:06:DD:1B:0E:31:8B:06:22:DE:10:D5:55:4B"
+            ]
+        }
+    }
+]
